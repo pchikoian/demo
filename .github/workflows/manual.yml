@@ -1,0 +1,18 @@
+name: Remote Dispatch Action Initiator
+ 
+on:
+  push:
+    branches:
+      - develop
+
+ 
+jobs:
+  ping-pong:
+    runs-on: ubuntu-latest
+    steps:
+      - name: PING - Dispatch initiating repository event
+        run: |
+          curl -X POST https://api.github.com/repos/pchikoian/demo2/actions/workflows/t2/dispatches \
+          -H 'Accept: application/vnd.github.everest-preview+json' \
+          -u ${{ secrets.ACCESS_TOKEN }} \
+          --data '{"ref":"master", "event_type": "ping", "client_payload": { "repository": "'"$GITHUB_REPOSITORY"'" }}'
